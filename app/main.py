@@ -1,11 +1,4 @@
-import socket
-
-def create_server(host = "127.0.0.1", port = 5000):
-
-    Server = socket.create_server((host, port))
-    print("Server is listening on port", port)
-
-    return Server
+from Server import *
 
 if __name__ ==  "__main__":
     Listener = create_server()
@@ -23,5 +16,3 @@ if __name__ ==  "__main__":
     print(f"send to client : {data}")
 
     Listener.close()
-
-
