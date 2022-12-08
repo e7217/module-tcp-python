@@ -1,23 +1,21 @@
+from dataclasses import dataclass, field
 import socket
 import time
 from threading import Thread, active_count
 
-from model.Client import Client
+from app.model.Client import Client
 
+@dataclass
 class Server:
 
-    host :str = ""
-    port :int = 0
-    clients : list[Client] = []
+    host :str = "localhost"
+    port :int = 5000
+    clients : list[Client] = field(default_factory=list)
     listener : socket.socket = None
-
-    def __init__(self, host: str = "localhost", port: int = 5000) -> None:
-        self.host = host
-        self.port = port
 
 class ServerBuilder:
 
-    server :Server
+    server : Server = None
     id : int = 0
 
     def __init__(self, server: Server) -> None:
@@ -25,6 +23,7 @@ class ServerBuilder:
     
     def create_server(self) -> socket.socket:
         self.server.listener = socket.create_server((self.server.host, self.server.port))
+        print("Address of Server is ", self.server.host)
         print("Server is listening on port", self.server.port)
         return self.server.listener
     

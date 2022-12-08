@@ -1,18 +1,15 @@
+from dataclasses import dataclass
 import socket
 import time
 from threading import Thread
 
 
+@dataclass
 class Client:
 
     id : int = 0
     sock : socket.socket = None
     addr : tuple = None
-
-    def __init__(self, id: int, sock: socket.socket, addr: tuple) -> None:
-        self.id = id
-        self.sock = sock
-        self.addr = addr
 
     def start(self) -> None:
         t1 = Thread(target=self.recv_handler)
