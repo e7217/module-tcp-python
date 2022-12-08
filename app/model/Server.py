@@ -1,37 +1,47 @@
+import socket
+import time
+from threading import Thread, active_count
+
+from model.Client import Client
+
 class Server:
-    def __init__(self, host, port):
+
+    host :str = ""
+    port :int = 0
+    clients : list[Client] = []
+    listener : socket.socket = None
+
+    def __init__(self, host: str = "localhost", port: int = 5000) -> None:
         self.host = host
         self.port = port
-        self.listener = None
-        self.clients = []
-        self.is_listening = False
 
-    def create_server(self):
-        self.listener = socket.create_server((self.host, self.port))
-        self.is_listening = True
-        print("Server is listening on port", self.port)
+class ServerBuilder:
 
-    def connect_with_client(self):
-        conn, addr = self.listener.accept()
-        self.clients.append(conn)
-        print(f"{addr}has connected to the server")
+    server :Server
+    id : int = 0
 
-    def send_message(self, message):
-        for client in self.clients:
-            client.send(message.encode())
+    def __init__(self, server: Server) -> None:
+        self.server = server
+    
+    def create_server(self) -> socket.socket:
+        self.server.listener = socket.create_server((self.server.host, self.server.port))
+        print("Server is listening on port", self.server.port)
+        return self.server.listener
+    
+    def get_server(self) -> Server:
+        return self.server
 
-    def receive_message(self):
-        for client in self.clients:
-            data = client.recv(1024).decode()
-            print(f"receive : {data}")
+    def start(self) -> None:
+        while True:
+            conn, addr = self.server.listener.accept()
+            print(f"{addr} has connected to the server")
 
-    def is_listening(self):
-        return self.is_listening
+            print("conut of active thread", active_count())
+            client = Client(self.id, conn, addr)
+            client.start()
+            print("conut of active thread", active_count())
+            self.server.clients.append(client)
 
-    def have_clients(self):
-        return len(self.clients) > 0
+            self.id += 1
 
-    def close(self):
-        self.listener.close()
-        self.is_listening = False
-        print("Server is closed")
+

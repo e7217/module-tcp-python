@@ -1,6 +1,7 @@
 import socket
 import unittest
-from src import Server
+from app.model.Server import Server, ServerBuilder
+from app.model.Client import Client
 
 class TestServer(unittest.TestCase):
 
