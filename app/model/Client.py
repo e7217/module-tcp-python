@@ -5,7 +5,7 @@ from threading import Thread
 
 
 @dataclass
-class Client:
+class ClientSocket:
 
     id : int = 0
     sock : socket.socket = None

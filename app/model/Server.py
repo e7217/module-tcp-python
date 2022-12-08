@@ -3,14 +3,14 @@ import socket
 import time
 from threading import Thread, active_count
 
-from app.model.Client import Client
+from app.model.Client import ClientSocket
 
 @dataclass
 class Server:
 
     host :str = "localhost"
     port :int = 5000
-    clients : list[Client] = field(default_factory=list)
+    clients : list[ClientSocket] = field(default_factory=list)
     listener : socket.socket = None
 
 class ServerBuilder:
@@ -31,16 +31,17 @@ class ServerBuilder:
         return self.server
 
     def start(self) -> None:
-        while True:
-            conn, addr = self.server.listener.accept()
-            print(f"{addr} has connected to the server")
+        with self.server.listener as Listener:
+            while True:
+                conn, addr = Listener.accept()
+                print(f"{addr} has connected to the server")
 
-            print("conut of active thread", active_count())
-            client = Client(self.id, conn, addr)
-            client.start()
-            print("conut of active thread", active_count())
-            self.server.clients.append(client)
+                print("conut of active thread", active_count())
+                client = ClientSocket(self.id, conn, addr)
+                client.start()
+                print("conut of active thread", active_count())
+                self.server.clients.append(client)
 
-            self.id += 1
+                self.id += 1
 
 
