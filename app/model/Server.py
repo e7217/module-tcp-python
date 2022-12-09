@@ -1,9 +1,10 @@
-from dataclasses import dataclass, field
 import socket
 import time
+from dataclasses import dataclass, field
 from threading import Thread, active_count
 
-from app.model.Client import ClientSocket
+from model.Client import ClientSocket
+
 
 @dataclass
 class Server:
