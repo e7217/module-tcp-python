@@ -17,7 +17,7 @@ class IProtocolBuilder(metaclass=ABCMeta):
         ...
 
 class ProtocolBuilder(IProtocolBuilder):
-    def __init__(self, payload: list[bytes]):
+    def __init__(self, payload: bytes):
         
         self.stx = payload[0]
         self.data = payload[1:-1]
