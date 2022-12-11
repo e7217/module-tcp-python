@@ -46,6 +46,7 @@ class TestServer(unittest.TestCase):
         ...
 
     def test_build_protocol(self):
+        # bytes = [0x02, 0x01, 0x01, 0x00, 0x00, 0x03]
         # bytes = b"\x02\x01\x01\x00\x00\x03"
         bytes = struct.pack("<bib", 2, 257, 3)
         protocolBuilder = ProtocolBuilder(bytes)
@@ -57,7 +58,7 @@ class TestServer(unittest.TestCase):
         protocol = protocolBuilder.build()
 
         self.assertIsInstance(protocol, Protocol)
-        print(protocol.data)
+        self.assertEqual(protocol.get_data(), 257)
         
         ...
 
