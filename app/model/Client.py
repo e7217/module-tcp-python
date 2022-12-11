@@ -23,7 +23,7 @@ class ClientSocket:
         t1.start()
         t2.start()
 
-    def parse_handler(self, payload: bytes) -> str:
+    def parse_handler(self, payload: list[bytes]) -> str:
         
         # 데이터를 빌더에 연결
         _protocol_builder = self.__handler(payload)
@@ -40,7 +40,7 @@ class ClientSocket:
                 _value = self.parse_handler(_message)
                 self.__value_queue.put(_message)
                 if _message:
-                    print(f"receive from cl ient{self.id}: {_message}, value: {_value}")
+                    print(f"receive from client{self.id}: {_message}, value: {_value}")
         except ConnectionAbortedError as e:
             print(f"Client{self.id} has disconnected")
             self.sock.close()

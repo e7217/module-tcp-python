@@ -1,8 +1,10 @@
 import socket
+import struct
 import unittest
 
-from app.model.Client import Client
-from app.model.Server import Server, ServerBuilder
+from model.Server import Server, ServerBuilder
+from model.Protocol import Protocol
+from Builders.ProtocolBuilder import ProtocolBuilder
 
 
 class TestServer(unittest.TestCase):
@@ -42,3 +44,21 @@ class TestServer(unittest.TestCase):
 
     def test_have_clients(self):
         ...
+
+    def test_build_protocol(self):
+        # bytes = b"\x02\x01\x01\x00\x00\x03"
+        bytes = struct.pack("<bib", 2, 257, 3)
+        protocolBuilder = ProtocolBuilder(bytes)
+        
+        is_protocol = protocolBuilder.Validate()
+
+        self.assertTrue(is_protocol) 
+
+        protocol = protocolBuilder.build()
+
+        self.assertIsInstance(protocol, Protocol)
+        print(protocol.data)
+        
+        ...
+
+    

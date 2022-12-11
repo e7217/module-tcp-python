@@ -1,4 +1,5 @@
 from abc import *
+import struct
 
 from model.Protocol import Protocol
 
@@ -27,6 +28,6 @@ class ProtocolBuilder(IProtocolBuilder):
         return Protocol(self.stx, self.data, self.etx)
 
     def Validate(self) -> bool:
-        if self.stx == b'0x2' and self.etx == b'0x3':
+        if self.stx == struct.unpack("<b", b"\x02")[0] and self.etx == struct.unpack("<b", b"\x03")[0]:
             return True
         return False
