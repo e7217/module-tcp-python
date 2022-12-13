@@ -1,4 +1,5 @@
 import socket
+import struct
 import time
 
 
@@ -26,7 +27,7 @@ class TestClient:
     def close(self):
         self.socket.close()
 
-packet = bytes(0x02)
+packet = b"\x02\x01\x01\x00\x00\x03"
 
 client = TestClient(host="127.0.0.1", port=5000)
 
@@ -34,3 +35,4 @@ for i in range(0, 1):
     client.send(packet)
     time.sleep(1)
     
+client.close()

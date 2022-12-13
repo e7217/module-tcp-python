@@ -30,7 +30,7 @@ class ClientSocket:
         # 빌더에서 프로토콜 생성
         _protocol : Protocol = _protocol_builder.build()
         # 프로토콜 리턴 값
-        return _protocol.get_string()
+        return _protocol.get_data()
 
     def recv_handler(self) -> None:
         try:
